@@ -27,7 +27,7 @@ export class AuthService {
 
     const payload = {
       sub: userSign.id,
-      role: userSign.Role,
+      role: userSign.role,
     };
     const accessToken = this.jwtService.sign(payload, {
       secret: process.env.JWT_SECRET,
@@ -39,20 +39,20 @@ export class AuthService {
   async createUser(
     createUserDto: CreateUserDto
   ): Promise<{ user: User; accessToken: string }> {
-    const { username, password, Role, pnumber } = createUserDto;
+    const { username, password, role, pnumber } = createUserDto;
 
     const hashedpassword = await bcrypt.hash(password, 10);
 
     const user = await this.userModle.create({
       username,
       password: hashedpassword,
-      Role,
+      role,
       pnumber,
     });
 
     const userdata = {
       sub: user.id,
-      Role: user.Role,
+      Role: user.role,
     };
     const accessToken = this.jwtService.sign(userdata);
     return { user, accessToken };

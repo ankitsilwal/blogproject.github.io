@@ -16,7 +16,7 @@ export class CreateUserDto {
 
   @ApiProperty()
   @IsEnum(UserRole)
-  Role: UserRole;
+  role: UserRole;
 
   @IsNotEmpty()
   @IsNumber()
