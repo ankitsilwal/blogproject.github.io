@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { Prop, SchemaFactory, Schema } from "@nestjs/mongoose";
 import { Document } from "mongoose";
+import { UserRole } from "./dto/createUserDto";
 
 @Schema({
   timestamps: true,
@@ -24,16 +25,16 @@ import { Document } from "mongoose";
 export class User {
   id: mongoose.Types.ObjectId;
 
-  @Prop({ required: true })
+  @Prop({ required: true, unique: true })
   Username: string;
 
   @Prop({ required: true })
   Password: string;
 
   @Prop({ required: true })
-  Role: string;
+  Role: UserRole;
 
-  @Prop({ required: true })
+  @Prop()
   PNumber: number;
 }
 
