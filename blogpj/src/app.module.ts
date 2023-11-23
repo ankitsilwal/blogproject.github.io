@@ -12,7 +12,14 @@ import { APP_GUARD } from "@nestjs/core";
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.MONGODB_URI),
     AuthModule,
-    BlogModule
+    BlogModule,
   ],
+
+  // providers: [
+  //   {
+  //     provide: APP_GUARD,
+  //     useClass: RolesGuard,
+  //   },
+  // ],
 })
 export class AppModule {}

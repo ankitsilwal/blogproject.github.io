@@ -32,7 +32,7 @@ export class User {
   password: string;
 
   @Prop({ required: true })
-  Role: string;
+  Role: UserRole;
 
   @Prop({ required: true })
   pnumber: number;
