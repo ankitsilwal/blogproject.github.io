@@ -1,19 +1,5 @@
 import {IsNotEmpty} from "@nestjs/class-validator"
-
-<<<<<<< Updated upstream
-
-export class UpdateUserDto{
-
-    @IsNotEmpty()
-    Username: string;
-    @IsNotEmpty()
-    Password: string;
-    @IsNotEmpty()
-    Role: string;
-    @IsNotEmpty()
-    PNumber: number;
-}
-=======
+import { ApiProperty } from "@nestjs/swagger";
 export class UpdateUserDto {
   @ApiProperty()
   @IsNotEmpty()
@@ -31,4 +17,3 @@ export class UpdateUserDto {
   @ApiProperty()
   pnumber: number;
 }
->>>>>>> Stashed changes
