@@ -26,10 +26,13 @@ export class User {
 
   @Prop({ required: true })
   Username: string;
+
   @Prop({ required: true })
   Password: string;
+
   @Prop({ required: true })
   Role: string;
+
   @Prop({ required: true })
   PNumber: number;
 }
