@@ -1,14 +1,13 @@
-import { IsNotEmpty } from "@nestjs/class-validator";
-import { ApiProperty } from "@nestjs/swagger/dist/decorators";
-
+import {IsNotEmpty} from "@nestjs/class-validator"
+import { ApiProperty } from "@nestjs/swagger";
 export class UpdateUserDto {
   @ApiProperty()
   @IsNotEmpty()
-  Username: string;
+  username: string;
 
   @IsNotEmpty()
   @ApiProperty()
-  Password: string;
+  password: string;
 
   @IsNotEmpty()
   @ApiProperty()
@@ -16,5 +15,5 @@ export class UpdateUserDto {
 
   @IsNotEmpty()
   @ApiProperty()
-  PNumber: number;
+  pnumber: number;
 }

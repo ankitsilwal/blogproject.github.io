@@ -5,6 +5,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { CreateBlogDto } from "./BlogDTO/CreateBlog.Dto";
 import mongoose from "mongoose";
 import { UpdateBlogDto } from "./BlogDTO/UpdateBlog.Dto";
+// const ObjectId = mongoose.Types.ObjectId
 @Injectable()
 export class BlogService {
   constructor(@InjectModel(Blog.name) private blogModel: Model<Blog>) {}
@@ -21,24 +22,27 @@ export class BlogService {
   }
 
   async deleteBlogById(blogId: mongoose.Types.ObjectId): Promise<Blog> {
-    const deleteBlogById = await this.blogModel.findByIdAndDelete(blogId);
+    const deleteBlogById = await this.blogModel.findOneAndDelete({
+      id: new mongoose.Types.ObjectId(blogId),
+    });
     if (!deleteBlogById) {
-      throw new NotFoundException(`User with #${blogId} not found`);
+      throw new NotFoundException(`Blog with #${blogId} not found`);
     }
     return deleteBlogById;
   }
 
   async updateById(
     blogId: mongoose.Types.ObjectId,
+    userId: mongoose.Types.ObjectId,
     updateBlogDto: UpdateBlogDto
   ): Promise<Blog> {
-    const existsBlog = await this.blogModel.findByIdAndUpdate(
-      blogId,
+    const existsBlog = await this.blogModel.findOneAndUpdate(
+      { _id: new mongoose.Types.ObjectId(blogId) },
       updateBlogDto,
       { new: true }
     );
     if (!existsBlog) {
-      throw new NotFoundException(`User with #${blogId} not found`);
+      throw new NotFoundException(`Blog with #${blogId} not found`);
     }
     return existsBlog;
   }
@@ -46,14 +50,16 @@ export class BlogService {
   async getAllBlogs(): Promise<Blog[]> {
     const blogs = await this.blogModel
       .find()
-      .populate("author", { Password: 0 });
+      .populate("author", { password: 0 });
     return blogs;
   }
 
   async getBlogById(blogId: mongoose.Types.ObjectId): Promise<Blog> {
-    const getBlogById = await this.blogModel.findById(blogId).populate("author", { Password: 0 });
+    const getBlogById = await this.blogModel
+      .findOne({ _id: new mongoose.Types.ObjectId(blogId) })
+      .populate("author", { password: 0 });
     if (!getBlogById) {
-      throw new NotFoundException(`User with #${blogId} not Found`);
+      throw new NotFoundException(`Blog with #${blogId} not Found`);
     }
     return getBlogById;
   }

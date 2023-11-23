@@ -1,10 +1,11 @@
 import { IsNotEmpty } from "@nestjs/class-validator";
-import { ApiProperty } from "@nestjs/swagger/dist/decorators";
+import { ApiProperty } from "@nestjs/swagger";
 export class SignInDto {
+
   @ApiProperty()
   @IsNotEmpty()
-  Username: string;
+  username: string;
   @ApiProperty()
   @IsNotEmpty()
-  Password: string;
+  password: string;
 }

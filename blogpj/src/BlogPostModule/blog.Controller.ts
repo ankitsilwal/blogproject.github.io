@@ -11,6 +11,7 @@ import {
   Get,
   Request,
   UseGuards,
+  Req,
 } from "@nestjs/common";
 import { BlogService } from "./blog.Service";
 import { CreateBlogDto } from "./BlogDTO/CreateBlog.Dto";
@@ -26,18 +27,18 @@ import {
   ApiBearerAuth,
   ApiTags,
 } from "@nestjs/swagger";
-import { RolesGuard } from "src/AuthModule/role.guard";
-import { UserRoles } from "src/role.decorator";
-import { UserRole } from "src/UserModule/dto/createUserDto";
-
+import { RolesGuard } from "src/AuthModule/RolesGuard/role.guard";
+import { UserRoles } from "src/AuthModule/RolesGuard/role.decorator";
+import { UserRole } from "src/AuthModule/Dto/createUserDto";
+@ApiBearerAuth()
 @ApiTags("BLOG- CREATION, DELETION, UPDATION & RETERIVAL")
 @Controller("blog")
-@ApiBearerAuth()
 @UseGuards(AuthGuard, RolesGuard)
 export class BlogController {
   constructor(private readonly blogService: BlogService) {}
 
-  @UserRoles(UserRole.ADMIN, UserRole.SOFTWAREDEVELOPER)
+  //Create Blog----------------------------------------------------------------------------------------------------------------------------------------
+  @UserRoles(UserRole.ADMIN, UserRole.USER, UserRole.VIEWER)
   @ApiOperation({
     summary: "CREATE BLOG",
     description: "This will create your blog",
@@ -45,7 +46,7 @@ export class BlogController {
   @ApiBody({ type: CreateBlogDto, description: "Enter blog details" })
   @ApiResponse({ status: 201, description: "Blog is created successfully" })
   @ApiResponse({ status: 400, description: "BAD REQUEST" })
-  @Post("/create")
+  @Post("")
   async createBlog(@Body() createBlogDto: CreateBlogDto, @Request() req: any) {
     try {
       const authorId = req.user.sub;
@@ -55,6 +56,7 @@ export class BlogController {
     }
   }
 
+  // Delete Blog--------------------------------------------------------------------------------------------------------------------------------------------------
   @ApiOperation({
     summary: "DELETE BLOG",
     description: "This will delete your blog",
@@ -68,8 +70,10 @@ export class BlogController {
   @ApiResponse({ status: 400, description: "BAD REQUEST" })
   @Delete(":id")
   async deleteBlogById(
-    @Param("id") blogId: mongoose.Types.ObjectId
+    @Param("id") blogId: mongoose.Types.ObjectId,
+    @Request() req: any
   ): Promise<string> {
+    const userId = req.user.sub;
     try {
       const deletedBlog = await this.blogService.deleteBlogById(blogId);
       return `User Deleted with id ${deletedBlog.id}`;
@@ -78,6 +82,9 @@ export class BlogController {
     }
   }
 
+  // Update Blog------------------------------------------------------------------------------------------------------------------------------------------
+
+  // @UserRoles(UserRole.USER)
   @ApiOperation({
     summary: "UPDATE BLOG",
     description: "This will update your blog",
@@ -93,19 +100,25 @@ export class BlogController {
   @Put(":id")
   async updateBlogById(
     @Param("id") blogId: mongoose.Types.ObjectId,
-    @Body() updateBlogDto: UpdateBlogDto
+    @Body() updateBlogDto: UpdateBlogDto,
+    @Request() req: any
   ) {
+    const userId = req.user.sub;
     try {
       const existsBlog = await this.blogService.updateById(
         blogId,
+        userId,
         updateBlogDto
       );
+
       return existsBlog;
     } catch (err) {
       throw new NotFoundException(err);
     }
   }
 
+  //Get Blog------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  @UserRoles(UserRole.ADMIN, UserRole.USER, UserRole.VIEWER)
   @ApiOperation({ summary: "GET BLOG", description: "This will Get all blogs" })
   @ApiResponse({ status: 200, description: "Blogs are reterived successfully" })
   @Get()
@@ -113,6 +126,8 @@ export class BlogController {
     const blogs = await this.blogService.getAllBlogs();
     return blogs;
   }
+
+  // Get By Id---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
   @ApiOperation({
     summary: "GET BLOG BY ID",
@@ -126,10 +141,14 @@ export class BlogController {
   @ApiResponse({ status: 200, description: "Blog is Reterived successfully" })
   @ApiResponse({ status: 400, description: "BAD REQUEST" })
   @Get(":id")
-  async getBlogById(@Param("id") blogId: mongoose.Types.ObjectId) {
+  async getBlogById(
+    @Param("id") blogId: mongoose.Types.ObjectId,
+    @Request() req: any
+  ) {
+    const userId = req.user.sub;
     try {
       const findBlogById = await this.blogService.getBlogById(blogId);
-      return findBlogById;
+      return { findBlogById, userId };
     } catch (err) {
       return new BadRequestException(err);
     }
