@@ -2,39 +2,11 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { User } from "./user.Schema";
 import mongoose, { Model } from "mongoose";
-import { CreateUserDto } from "./dto/createUserDto";
-import * as bcrypt from "bcrypt";
-import { JwtService } from "@nestjs/jwt";
 import { UpdateUserDto } from "./dto/updateUserDto";
 
 @Injectable()
 export class UserService {
-  constructor(
-    @InjectModel(User.name) private userModle: Model<User>,
-    private jwtService: JwtService
-  ) {}
-
-  async createUser(
-    createUserDto: CreateUserDto
-  ): Promise<{ user: User; accessToken: string }> {
-    const { Username, Password, Role, PNumber } = createUserDto;
-
-    const hashedPassword = await bcrypt.hash(Password, 10);
-
-    const user = await this.userModle.create({
-      Username,
-      Password: hashedPassword,
-      Role,
-      PNumber,
-    });
-
-    const userdata = {
-      sub: user.id,
-      Role: user.Role,
-    };
-    const accessToken = this.jwtService.sign(userdata);
-    return { user, accessToken };
-  }
+  constructor(@InjectModel(User.name) private userModle: Model<User>) {}
 
   async deleteUserById(userId: mongoose.Types.ObjectId): Promise<User> {
     const deleteUserById = await this.userModle.findByIdAndDelete(userId);
@@ -45,12 +17,12 @@ export class UserService {
   }
 
   async getAllUsers(): Promise<User[]> {
-    const users = await this.userModle.find({}, { Password: 0 }).exec();
+    const users = await this.userModle.find({}, { password: 0 }).exec();
     return users;
   }
 
   async getUserById(userId: mongoose.Types.ObjectId): Promise<User> {
-    const getUserById = await this.userModle.findById(userId, { Password: 0 });
+    const getUserById = await this.userModle.findById(userId, { password: 0 });
     if (!getUserById) {
       throw new NotFoundException(`User with #${userId} not Found`);
     }
@@ -72,7 +44,7 @@ export class UserService {
     return existsUser;
   }
 
-  async findUserByUsername(Username: string): Promise<User | null> {
-    return this.userModle.findOne({ Username });
+  async findUserByusername(username: string): Promise<User | null> {
+    return this.userModle.findOne({ username });
   }
 }

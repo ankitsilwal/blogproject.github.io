@@ -4,7 +4,12 @@ import { ConfigModule } from "@nestjs/config";
 import { MongooseModule } from "@nestjs/mongoose";
 import { AuthModule } from "./AuthModule/auth.module";
 import { BlogModule } from "./BlogPostModule/blog.Module";
+<<<<<<< Updated upstream
 
+=======
+import { RolesGuard } from "./AuthModule/RolesGuard/role.guard";
+import { APP_GUARD } from "@nestjs/core";
+>>>>>>> Stashed changes
 @Module({
   imports: [
     UserModule,
