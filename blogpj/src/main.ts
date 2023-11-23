@@ -1,10 +1,3 @@
-<<<<<<< Updated upstream
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-=======
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { DocumentBuilder } from "@nestjs/swagger";
@@ -24,7 +17,6 @@ async function bootstrap() {
   SwaggerModule.setup("api", app, document);
 
   app.useGlobalPipes(new ValidationPipe())
->>>>>>> Stashed changes
   await app.listen(3000);
 }
 bootstrap();

@@ -1,10 +1,7 @@
 import mongoose from "mongoose";
 import { Prop, SchemaFactory, Schema } from "@nestjs/mongoose";
 import { Document } from "mongoose";
-<<<<<<< Updated upstream
-=======
 import { UserRole } from "../AuthModule/Dto/createUserDto";
->>>>>>> Stashed changes
 
 @Schema({
   timestamps: true,
@@ -28,13 +25,8 @@ import { UserRole } from "../AuthModule/Dto/createUserDto";
 export class User {
   id: mongoose.Types.ObjectId;
 
-<<<<<<< Updated upstream
-  @Prop({ required: true })
-  Username: string;
-=======
   @Prop({ required: true, unique: true })
   username: string;
->>>>>>> Stashed changes
 
   @Prop({ required: true })
   password: string;
@@ -43,11 +35,7 @@ export class User {
   Role: string;
 
   @Prop({ required: true })
-<<<<<<< Updated upstream
-  PNumber: number;
-=======
   pnumber: number;
->>>>>>> Stashed changes
 }
 
 export const UserDocument = User && Document;

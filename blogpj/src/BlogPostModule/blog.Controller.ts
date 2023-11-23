@@ -19,8 +19,6 @@ import mongoose from "mongoose";
 import { UpdateBlogDto } from "./BlogDTO/UpdateBlog.Dto";
 import { Blog } from "./blog.Schema";
 import { AuthGuard } from "src/AuthModule/auth.guard";
-<<<<<<< Updated upstream
-=======
 import {
   ApiOperation,
   ApiBody,
@@ -32,17 +30,13 @@ import {
 import { RolesGuard } from "src/AuthModule/RolesGuard/role.guard";
 import { UserRoles } from "src/AuthModule/RolesGuard/role.decorator";
 import { UserRole } from "src/AuthModule/Dto/createUserDto";
-
+@ApiBearerAuth()
 @ApiTags("BLOG- CREATION, DELETION, UPDATION & RETERIVAL")
->>>>>>> Stashed changes
 @Controller("blog")
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuard, RolesGuard)
 export class BlogController {
   constructor(private readonly blogService: BlogService) {}
 
-<<<<<<< Updated upstream
-  @Post("/create")
-=======
   //Create Blog----------------------------------------------------------------------------------------------------------------------------------------
   @UserRoles(UserRole.ADMIN, UserRole.USER, UserRole.VIEWER)
   @ApiOperation({
@@ -53,7 +47,6 @@ export class BlogController {
   @ApiResponse({ status: 201, description: "Blog is created successfully" })
   @ApiResponse({ status: 400, description: "BAD REQUEST" })
   @Post("")
->>>>>>> Stashed changes
   async createBlog(@Body() createBlogDto: CreateBlogDto, @Request() req: any) {
     try {
       const authorId = req.user.sub;
@@ -63,8 +56,6 @@ export class BlogController {
     }
   }
 
-<<<<<<< Updated upstream
-=======
   // Delete Blog--------------------------------------------------------------------------------------------------------------------------------------------------
   @ApiOperation({
     summary: "DELETE BLOG",
@@ -77,7 +68,6 @@ export class BlogController {
   })
   @ApiResponse({ status: 200, description: "Blog is delted successfully" })
   @ApiResponse({ status: 400, description: "BAD REQUEST" })
->>>>>>> Stashed changes
   @Delete(":id")
   async deleteBlogById(
     @Param("id") blogId: mongoose.Types.ObjectId,
@@ -92,8 +82,6 @@ export class BlogController {
     }
   }
 
-<<<<<<< Updated upstream
-=======
   // Update Blog------------------------------------------------------------------------------------------------------------------------------------------
 
   // @UserRoles(UserRole.USER)
@@ -109,7 +97,6 @@ export class BlogController {
   @ApiBody({ type: UpdateBlogDto, description: "Enter updated data" })
   @ApiResponse({ status: 200, description: "Blog is Updated successfully" })
   @ApiResponse({ status: 400, description: "BAD REQUEST" })
->>>>>>> Stashed changes
   @Put(":id")
   async updateBlogById(
     @Param("id") blogId: mongoose.Types.ObjectId,
@@ -130,21 +117,16 @@ export class BlogController {
     }
   }
 
-<<<<<<< Updated upstream
-=======
   //Get Blog------------------------------------------------------------------------------------------------------------------------------------------------------------------
   @UserRoles(UserRole.ADMIN, UserRole.USER, UserRole.VIEWER)
   @ApiOperation({ summary: "GET BLOG", description: "This will Get all blogs" })
   @ApiResponse({ status: 200, description: "Blogs are reterived successfully" })
->>>>>>> Stashed changes
   @Get()
   async getAllBlogs(): Promise<Blog[]> {
     const blogs = await this.blogService.getAllBlogs();
     return blogs;
   }
 
-<<<<<<< Updated upstream
-=======
   // Get By Id---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
   @ApiOperation({
@@ -158,7 +140,6 @@ export class BlogController {
   })
   @ApiResponse({ status: 200, description: "Blog is Reterived successfully" })
   @ApiResponse({ status: 400, description: "BAD REQUEST" })
->>>>>>> Stashed changes
   @Get(":id")
   async getBlogById(
     @Param("id") blogId: mongoose.Types.ObjectId,
