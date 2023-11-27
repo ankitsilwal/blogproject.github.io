@@ -46,26 +46,28 @@ describe("USERS(e2e)-TESTING", () => {
       });
   });
 
-
-
   // UPDATE USER BY ID------------------------------------------------------------------------------------------
 
-  it('(PUT)- PUT BY ID', async()=>{
-    const updateUser={username:'Vivek Doshi'};
-    const userId="6564712d12617217693576e7";
-    return request(app.getHttpServer()).put(`/users/${userId}`).send(updateUser).expect(200).then((res)=>{
+  it("(PUT)- PUT BY ID", async () => {
+    const updateUser = { username: "Vivek Doshi" };
+    const userId = "6564712d12617217693576e7";
+    return request(app.getHttpServer())
+      .put(`/users/${userId}`)
+      .send(updateUser)
+      .expect(200)
+      .then((res) => {
         expect(res.body).toBeDefined();
         expect(res.body.username).toEqual(updateUser.username);
-    })
-  })
+      });
+  });
 
+  // DELETE USER BY ID------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-   // DELETE USER BY ID------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-   it('(DELETE)-DELETE BY ID', async()=>{
-    const userId="";
-    const response  = await request(app.getHttpServer()).delete(`/users/${userId}`);
+  it("(DELETE)-DELETE BY ID", async () => {
+    const userId = "";
+    const response = await request(app.getHttpServer()).delete(
+      `/users/${userId}`
+    );
     expect(response.status).toEqual(200);
-    
-  })
+  });
 });

@@ -71,19 +71,17 @@ export class BlogService {
     return blogs;
   }
 
-  async getBlogById(blogId: mongoose.Types.ObjectId, author: mongoose.Types.ObjectId): Promise<Blog> {
-    const getBlogById = await this.blogModel
-      .findOne({ _id: blogId, author: author })
-      .populate('author', { password: 0 });
-
-    if (!getBlogById) {
-      throw new NotFoundException(`Blog with ID ${blogId} not found or you do not have permission to access it`);
+  async getBlogById(blogId: mongoose.Types.ObjectId, userId: mongoose.Types.ObjectId): Promise<Blog> {
+    const foundBlog = await this.blogModel.findOne({
+      _id: blogId,
+      author: new mongoose.Types.ObjectId(userId),
+    });
+  
+    if (!foundBlog) {
+      throw new NotFoundException(`Blog with #${blogId} not found or does not belong to the specified user`);
     }
-
-    if (!author.equals(getBlogById.author)) {
-      throw new UnauthorizedException('You do not have permission to get');
-    }
-
-    return getBlogById;
+  
+    return foundBlog;
   }
+  
 }
