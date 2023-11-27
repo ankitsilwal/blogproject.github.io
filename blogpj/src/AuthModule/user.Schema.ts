@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { Prop, SchemaFactory, Schema } from "@nestjs/mongoose";
 import { Document } from "mongoose";
-import { User } from "../UserModule/user.Schema";
+import { UserRole } from "./Dto/createUserDto";
 
 @Schema({
   timestamps: true,
@@ -22,23 +22,21 @@ import { User } from "../UserModule/user.Schema";
     },
   },
 })
-export class Blog {
+export class User {
   id: mongoose.Types.ObjectId;
 
-  @Prop()
-  blogname: String;
+  @Prop({ required: true, unique: true })
+  username: string;
 
-  @Prop({ type: mongoose.Types.ObjectId, ref: "User" })
-  author: mongoose.Types.ObjectId;
-  @Prop()
-  genre: String;
-  @Prop()
-  description: String;
-  @Prop()
-  problem: String;
-  @Prop()
-  summary: String;
+  @Prop({ required: true })
+  password: string;
+
+  @Prop({ required: true })
+  role: UserRole;
+
+  @Prop({ required: true })
+  pnumber: number;
 }
 
-export const BlogDocument = Blog && Document;
-export const BlogSchema = SchemaFactory.createForClass(Blog);
+export const UserDocument = User && Document;
+export const UserSchema = SchemaFactory.createForClass(User);

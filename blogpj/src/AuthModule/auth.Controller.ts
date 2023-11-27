@@ -7,7 +7,7 @@ import {
 } from "@nestjs/common";
 import { AuthService } from "./auth.Service";
 import { SignInDto } from "./Dto/signin.Dto";
-import { CreateUserDto } from "src/AuthModule/Dto/createUserDto";
+import { CreateUserDto } from "./Dto/createUserDto";
 import {
   ApiOperation,
   ApiBody,
