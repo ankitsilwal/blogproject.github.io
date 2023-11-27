@@ -130,26 +130,22 @@ export class BlogController {
 
   // Get By Id---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-  @ApiOperation({
-    summary: "GET BLOG BY ID",
-    description: "This will Get your blog",
-  })
   @ApiParam({
-    name: "id",
-    description: "Enter your Blog Id to Reterive",
+    name: 'id',
+    description: 'Enter your Blog Id to Retrieve',
     type: String,
   })
-  @ApiResponse({ status: 200, description: "Blog is Reterived successfully" })
-  @ApiResponse({ status: 400, description: "BAD REQUEST" })
-  @Get(":id")
+  @ApiResponse({ status: 200, description: 'Blog is Retrieved successfully' })
+  @ApiResponse({ status: 400, description: 'BAD REQUEST' })
+  @Get(':id')
   async getBlogById(
-    @Param("id") blogId: mongoose.Types.ObjectId,
-    @Request() req: any
+    @Param('id') blogId: mongoose.Types.ObjectId,
+    @Request() req: any,
   ) {
     const author: mongoose.Types.ObjectId = req.user.sub;
     try {
       const findBlogById = await this.blogService.getBlogById(blogId, author);
-      return { findBlogById };
+      return  findBlogById ;
     } catch (err) {
       return new BadRequestException(err);
     }
