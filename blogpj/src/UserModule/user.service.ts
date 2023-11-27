@@ -43,8 +43,4 @@ export class UserService {
     }
     return existsUser;
   }
-
-  async findUserByusername(username: string): Promise<User | null> {
-    return this.userModle.findOne({ username });
-  }
 }

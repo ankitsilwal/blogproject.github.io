@@ -3,9 +3,9 @@ import { BlogController } from "./blog.Controller";
 import { BlogService } from "./blog.Service";
 import { Blog, BlogSchema } from "./blog.Schema";
 import { MongooseModule } from "@nestjs/mongoose";
-import { AuthModule } from "src/AuthModule/auth.module";
+import { AuthModule } from "../AuthModule/auth.module";
 import { JwtService } from "@nestjs/jwt";
-import { RolesGuard } from "src/AuthModule/RolesGuard/role.guard";
+import { RolesGuard } from "../AuthModule/RolesGuard/role.guard";
 
 @Module({
   imports: [

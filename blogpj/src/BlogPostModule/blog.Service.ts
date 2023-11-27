@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from "@nestjs/common";
 import { Blog } from "./blog.Schema";
 import { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
@@ -21,14 +25,20 @@ export class BlogService {
     return blog;
   }
 
-  async deleteBlogById(blogId: mongoose.Types.ObjectId): Promise<Blog> {
-    const deleteBlogById = await this.blogModel.findOneAndDelete({
-      id: new mongoose.Types.ObjectId(blogId),
+  async deleteBlogById(
+    blogId: mongoose.Types.ObjectId,
+    author: mongoose.Types.ObjectId
+  ): Promise<Blog> {
+    const deletedBlog = await this.blogModel.findOneAndDelete({
+      _id: blogId,
+      author: new mongoose.Types.ObjectId(author),
     });
-    if (!deleteBlogById) {
-      throw new NotFoundException(`Blog with #${blogId} not found`);
+
+    if (!deletedBlog) {
+      throw new NotFoundException(`Blog with ID ${blogId} not found`);
     }
-    return deleteBlogById;
+
+    return deletedBlog;
   }
 
   async updateById(
@@ -37,13 +47,20 @@ export class BlogService {
     updateBlogDto: UpdateBlogDto
   ): Promise<Blog> {
     const existsBlog = await this.blogModel.findOneAndUpdate(
-      { _id: new mongoose.Types.ObjectId(blogId) },
+      {
+        _id: blogId,
+        author: new mongoose.Types.ObjectId(userId),
+      },
       updateBlogDto,
       { new: true }
     );
+
     if (!existsBlog) {
-      throw new NotFoundException(`Blog with #${blogId} not found`);
+      throw new NotFoundException(
+        `Blog with #${blogId} not found or does not belong to the specified user`
+      );
     }
+
     return existsBlog;
   }
 
@@ -54,13 +71,19 @@ export class BlogService {
     return blogs;
   }
 
-  async getBlogById(blogId: mongoose.Types.ObjectId): Promise<Blog> {
+  async getBlogById(blogId: mongoose.Types.ObjectId, author: mongoose.Types.ObjectId): Promise<Blog> {
     const getBlogById = await this.blogModel
-      .findOne({ _id: new mongoose.Types.ObjectId(blogId) })
-      .populate("author", { password: 0 });
+      .findOne({ _id: blogId, author: author })
+      .populate('author', { password: 0 });
+
     if (!getBlogById) {
-      throw new NotFoundException(`Blog with #${blogId} not Found`);
+      throw new NotFoundException(`Blog with ID ${blogId} not found or you do not have permission to access it`);
     }
+
+    if (!author.equals(getBlogById.author)) {
+      throw new UnauthorizedException('You do not have permission to get');
+    }
+
     return getBlogById;
   }
 }
