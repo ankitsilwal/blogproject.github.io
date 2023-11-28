@@ -1,14 +1,13 @@
 import {
   Injectable,
   NotFoundException,
-  UnauthorizedException,
 } from "@nestjs/common";
-import { Blog } from "./blog.Schema";
+import { Blog } from "./blog.schema";
 import { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
-import { CreateBlogDto } from "./BlogDTO/CreateBlog.Dto";
+import { CreateBlogDto } from "./BlogDTO/createblog.dto";
 import mongoose from "mongoose";
-import { UpdateBlogDto } from "./BlogDTO/UpdateBlog.Dto";
+import { UpdateBlogDto } from "./BlogDTO/updateblog.dto";
 // const ObjectId = mongoose.Types.ObjectId
 @Injectable()
 export class BlogService {
@@ -71,17 +70,21 @@ export class BlogService {
     return blogs;
   }
 
-  async getBlogById(blogId: mongoose.Types.ObjectId, userId: mongoose.Types.ObjectId): Promise<Blog> {
+  async getBlogById(
+    blogId: mongoose.Types.ObjectId,
+    userId: mongoose.Types.ObjectId
+  ): Promise<Blog> {
     const foundBlog = await this.blogModel.findOne({
       _id: blogId,
       author: new mongoose.Types.ObjectId(userId),
     });
-  
+
     if (!foundBlog) {
-      throw new NotFoundException(`Blog with #${blogId} not found or does not belong to the specified user`);
+      throw new NotFoundException(
+        `Blog with #${blogId} not found or does not belong to the specified user`
+      );
     }
-  
+
     return foundBlog;
   }
-  
 }

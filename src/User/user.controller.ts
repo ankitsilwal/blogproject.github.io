@@ -10,10 +10,15 @@ import {
 } from "@nestjs/common";
 import { UserService } from "./user.service";
 import mongoose from "mongoose";
-import { UpdateUserDto } from "./dto/updateUserDto";
-import { User } from "./user.Schema";
-import { ApiOperation, ApiResponse, ApiParam, ApiBody, ApiTags } from "@nestjs/swagger";
-
+import { UpdateUserDto } from "./dto/updateuserDto";
+import { User } from "./user.schema";
+import {
+  ApiOperation,
+  ApiResponse,
+  ApiParam,
+  ApiBody,
+  ApiTags,
+} from "@nestjs/swagger";
 
 @ApiTags("USERS- DELETION, UPDATION & RETERIVAL")
 @Controller("/users")

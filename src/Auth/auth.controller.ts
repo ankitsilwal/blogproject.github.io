@@ -5,9 +5,9 @@ import {
   NotFoundException,
   Post,
 } from "@nestjs/common";
-import { AuthService } from "./auth.Service";
-import { SignInDto } from "./Dto/signin.Dto";
-import { CreateUserDto } from "./Dto/createUserDto";
+import { AuthService } from "./auth.service";
+import { SignInDto } from "./Dto/signindto";
+import { CreateUserDto } from "./Dto/createuserDto";
 import {
   ApiOperation,
   ApiBody,

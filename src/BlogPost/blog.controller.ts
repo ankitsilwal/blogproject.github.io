@@ -12,12 +12,12 @@ import {
   Request,
   UseGuards,
 } from "@nestjs/common";
-import { BlogService } from "./blog.Service";
-import { CreateBlogDto } from "./BlogDTO/CreateBlog.Dto";
+import { BlogService } from "./blog.service";
+import { CreateBlogDto } from "./BlogDTO/createblog.dto";
 import mongoose from "mongoose";
-import { UpdateBlogDto } from "./BlogDTO/UpdateBlog.Dto";
-import { Blog } from "./blog.Schema";
-import { AuthGuard } from "../AuthModule/auth.guard";
+import { UpdateBlogDto } from "./BlogDTO/updateblog.dto";
+import { Blog } from "./blog.schema";
+import { AuthGuard } from "../Auth/auth.guard";
 import {
   ApiOperation,
   ApiBody,
@@ -26,9 +26,9 @@ import {
   ApiBearerAuth,
   ApiTags,
 } from "@nestjs/swagger";
-import { RolesGuard } from "../AuthModule/RolesGuard/role.guard";
-import { UserRoles } from "../AuthModule/RolesGuard/role.decorator";
-import { UserRole } from "../AuthModule/Dto/createUserDto";
+import { RolesGuard } from "../Auth/RolesGuard/role.guard";
+import { UserRoles } from "../Auth/RolesGuard/role.decorator";
+import { UserRole } from "../Auth/Dto/createUserDto";
 
 @ApiBearerAuth()
 @ApiTags("BLOG- CREATION, DELETION, UPDATION & RETERIVAL")
@@ -131,21 +131,21 @@ export class BlogController {
   // Get By Id---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
   @ApiParam({
-    name: 'id',
-    description: 'Enter your Blog Id to Retrieve',
+    name: "id",
+    description: "Enter your Blog Id to Retrieve",
     type: String,
   })
-  @ApiResponse({ status: 200, description: 'Blog is Retrieved successfully' })
-  @ApiResponse({ status: 400, description: 'BAD REQUEST' })
-  @Get(':id')
+  @ApiResponse({ status: 200, description: "Blog is Retrieved successfully" })
+  @ApiResponse({ status: 400, description: "BAD REQUEST" })
+  @Get(":id")
   async getBlogById(
-    @Param('id') blogId: mongoose.Types.ObjectId,
-    @Request() req: any,
+    @Param("id") blogId: mongoose.Types.ObjectId,
+    @Request() req: any
   ) {
     const author: mongoose.Types.ObjectId = req.user.sub;
     try {
       const findBlogById = await this.blogService.getBlogById(blogId, author);
-      return  findBlogById ;
+      return findBlogById;
     } catch (err) {
       return new BadRequestException(err);
     }

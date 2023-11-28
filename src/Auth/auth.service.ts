@@ -3,8 +3,8 @@ import { JwtService } from "@nestjs/jwt";
 import * as bcrypt from "bcrypt";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { User } from "./user.Schema";
-import { CreateUserDto } from "../AuthModule/Dto/createUserDto";
+import { CreateUserDto } from "../Auth/Dto/createUserDto";
+import { User } from "src/User/user.schema";
 @Injectable()
 export class AuthService {
   constructor(
@@ -52,7 +52,6 @@ export class AuthService {
       sub: user.id,
 
       role: user.role,
-
     };
     const accessToken = this.jwtService.sign(userdata);
     return { user, accessToken };
