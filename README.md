@@ -56,14 +56,14 @@ MongoDB installed and running
 ## Installation
 Clone the repository:
 
-bash
-git clone https://github.com/your-username/your-repository.git
+```bash
+#git clone https://github.com/your-username/your-repository.git
 Install dependencies:
-
-bash
+```
+```bash
 cd your-repository
-npm install
-
+$ npm install
+```
 ## Configuration
 Set up your environment variables:
 
