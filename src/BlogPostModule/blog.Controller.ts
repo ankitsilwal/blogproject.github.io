@@ -11,14 +11,13 @@ import {
   Get,
   Request,
   UseGuards,
-  Req,
 } from "@nestjs/common";
 import { BlogService } from "./blog.Service";
 import { CreateBlogDto } from "./BlogDTO/CreateBlog.Dto";
 import mongoose from "mongoose";
 import { UpdateBlogDto } from "./BlogDTO/UpdateBlog.Dto";
 import { Blog } from "./blog.Schema";
-import { AuthGuard } from "src/AuthModule/auth.guard";
+import { AuthGuard } from "../AuthModule/auth.guard";
 import {
   ApiOperation,
   ApiBody,
@@ -27,9 +26,10 @@ import {
   ApiBearerAuth,
   ApiTags,
 } from "@nestjs/swagger";
-import { RolesGuard } from "src/AuthModule/RolesGuard/role.guard";
-import { UserRoles } from "src/AuthModule/RolesGuard/role.decorator";
-import { UserRole } from "src/AuthModule/Dto/createUserDto";
+import { RolesGuard } from "../AuthModule/RolesGuard/role.guard";
+import { UserRoles } from "../AuthModule/RolesGuard/role.decorator";
+import { UserRole } from "../AuthModule/Dto/createUserDto";
+
 @ApiBearerAuth()
 @ApiTags("BLOG- CREATION, DELETION, UPDATION & RETERIVAL")
 @Controller("blog")
@@ -68,14 +68,15 @@ export class BlogController {
   })
   @ApiResponse({ status: 200, description: "Blog is delted successfully" })
   @ApiResponse({ status: 400, description: "BAD REQUEST" })
+  @UserRoles(UserRole.ADMIN, UserRole.USER)
   @Delete(":id")
   async deleteBlogById(
     @Param("id") blogId: mongoose.Types.ObjectId,
     @Request() req: any
   ): Promise<string> {
-    const userId = req.user.sub;
+    const author: mongoose.Types.ObjectId = req.user.sub;
     try {
-      const deletedBlog = await this.blogService.deleteBlogById(blogId);
+      const deletedBlog = await this.blogService.deleteBlogById(blogId, author);
       return `User Deleted with id ${deletedBlog.id}`;
     } catch (err) {
       throw new BadRequestException(err);
@@ -129,26 +130,22 @@ export class BlogController {
 
   // Get By Id---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-  @ApiOperation({
-    summary: "GET BLOG BY ID",
-    description: "This will Get your blog",
-  })
   @ApiParam({
-    name: "id",
-    description: "Enter your Blog Id to Reterive",
+    name: 'id',
+    description: 'Enter your Blog Id to Retrieve',
     type: String,
   })
-  @ApiResponse({ status: 200, description: "Blog is Reterived successfully" })
-  @ApiResponse({ status: 400, description: "BAD REQUEST" })
-  @Get(":id")
+  @ApiResponse({ status: 200, description: 'Blog is Retrieved successfully' })
+  @ApiResponse({ status: 400, description: 'BAD REQUEST' })
+  @Get(':id')
   async getBlogById(
-    @Param("id") blogId: mongoose.Types.ObjectId,
-    @Request() req: any
+    @Param('id') blogId: mongoose.Types.ObjectId,
+    @Request() req: any,
   ) {
-    const userId = req.user.sub;
+    const author: mongoose.Types.ObjectId = req.user.sub;
     try {
-      const findBlogById = await this.blogService.getBlogById(blogId);
-      return { findBlogById, userId };
+      const findBlogById = await this.blogService.getBlogById(blogId, author);
+      return  findBlogById ;
     } catch (err) {
       return new BadRequestException(err);
     }

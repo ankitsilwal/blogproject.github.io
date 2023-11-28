@@ -1,21 +1,19 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import { UserService } from "src/UserModule/user.service";
 import * as bcrypt from "bcrypt";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { User } from "src/UserModule/user.Schema";
-import { CreateUserDto } from "src/AuthModule/Dto/createUserDto";
+import { User } from "./user.Schema";
+import { CreateUserDto } from "../AuthModule/Dto/createUserDto";
 @Injectable()
 export class AuthService {
   constructor(
     private jwtService: JwtService,
-    private userService: UserService,
     @InjectModel(User.name) private userModle: Model<User>
   ) {}
 
   async signin(username: string, password: string) {
-    const userSign = await this.userService.findUserByusername(username);
+    const userSign = await this.findUserByusername(username);
     if (!userSign) {
       throw new UnauthorizedException("User Not Found");
     }
@@ -27,7 +25,7 @@ export class AuthService {
 
     const payload = {
       sub: userSign.id,
-      role: userSign.Role,
+      role: userSign.role,
     };
     const accessToken = this.jwtService.sign(payload, {
       secret: process.env.JWT_SECRET,
@@ -39,22 +37,28 @@ export class AuthService {
   async createUser(
     createUserDto: CreateUserDto
   ): Promise<{ user: User; accessToken: string }> {
-    const { username, password, Role, pnumber } = createUserDto;
+    const { username, password, role, pnumber } = createUserDto;
 
     const hashedpassword = await bcrypt.hash(password, 10);
 
     const user = await this.userModle.create({
       username,
       password: hashedpassword,
-      Role,
+      role,
       pnumber,
     });
 
     const userdata = {
       sub: user.id,
-      Role: user.Role,
+
+      role: user.role,
+
     };
     const accessToken = this.jwtService.sign(userdata);
     return { user, accessToken };
+  }
+
+  async findUserByusername(username: string): Promise<User | null> {
+    return this.userModle.findOne({ username });
   }
 }

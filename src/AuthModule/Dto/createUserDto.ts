@@ -1,25 +1,24 @@
-import * as mongoose from "mongoose";
 import { ApiProperty } from "@nestjs/swagger/dist";
-import { IsEnum, IsNotEmpty, IsNumber } from "class-validator";
+import { IsEnum, IsNotEmpty, IsNumber } from "@nestjs/class-validator";
 
 export enum UserRole {
   USER = "user",
   ADMIN = "admin",
-  SOFTWAREDEVELOPER = "Software Developer",
+  VIEWER = "view",
 }
 export class CreateUserDto {
   @ApiProperty()
   @IsNotEmpty()
-  Username: String;
+  username: String;
   @ApiProperty()
   @IsNotEmpty()
-  Password: String;
+  password: String;
 
   @ApiProperty()
   @IsEnum(UserRole)
-  Role: UserRole;
+  role: UserRole;
 
   @IsNotEmpty()
   @IsNumber()
-  PNumber: Number;
+  pnumber: Number;
 }
