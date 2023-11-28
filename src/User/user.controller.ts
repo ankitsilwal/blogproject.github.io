@@ -68,6 +68,7 @@ export class UserController {
   @ApiParam({ name: "id", description: "User Id", type: String })
   @ApiResponse({ status: 200, description: "User is reterived successfully" })
   @ApiResponse({ status: 400, description: "BAD REQUEST" })
+  @UserRoles(UserRole.ADMIN)
   @Get(":id")
   async getUserById(@Param("id") userId: mongoose.Types.ObjectId) {
     try {
@@ -86,6 +87,7 @@ export class UserController {
   @ApiBody({ type: UpdateUserDto, description: "Update your data" })
   @ApiResponse({ status: 200, description: "User is updated successfully" })
   @ApiResponse({ status: 400, description: "BAD REQUEST" })
+  @UserRoles(UserRole.ADMIN)
   @Put(":id")
   async updateUserById(
     @Param("id") userId: mongoose.Types.ObjectId,
