@@ -1,19 +1,37 @@
-import {IsNotEmpty} from "@nestjs/class-validator"
+import { IsNotEmpty, ValidateIf } from "@nestjs/class-validator";
 import { ApiProperty } from "@nestjs/swagger";
+
+import { IsEnum, IsNumber } from "@nestjs/class-validator";
+
+export enum UserRole {
+  USER = "user",
+  ADMIN = "admin",
+  VIEWER = "view",
+}
 export class UpdateUserDto {
   @ApiProperty()
+  @ValidateIf((obj) => !obj.role && !obj.pnumber)
   @IsNotEmpty()
-  username: string;
+  username: String;
 
-  @IsNotEmpty()
   @ApiProperty()
-  password: string;
+  @IsEnum(UserRole)
+  @ValidateIf((obj) => !obj.username && !obj.pnumber)
+  @IsNotEmpty()
+  role: UserRole;
 
+  @ValidateIf((obj) => !obj.role && !obj.username)
   @IsNotEmpty()
-  @ApiProperty()
-  role: string;
+  @IsNumber()
+  pnumber: Number;
+}
 
-  @IsNotEmpty()
+export class updateUserPasswordDto {
   @ApiProperty()
-  pnumber: number;
+  @IsNotEmpty()
+  password: String;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  confirmPassword: String;
 }

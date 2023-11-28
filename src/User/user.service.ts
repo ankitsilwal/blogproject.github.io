@@ -1,8 +1,12 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { User } from "./user.schema";
 import mongoose, { Model } from "mongoose";
-import { UpdateUserDto } from "./dto/updateuserDto";
+import { UpdateUserDto, updateUserPasswordDto } from "./dto/updateuserDto";
 
 @Injectable()
 export class UserService {
@@ -17,12 +21,18 @@ export class UserService {
   }
 
   async getAllUsers(): Promise<User[]> {
-    const users = await this.userModle.find({}, { password: 0 }).exec();
+    const users = await this.userModle
+      .find({}, { password: 0, role: 0, pnumber: 0 })
+      .exec();
     return users;
   }
 
   async getUserById(userId: mongoose.Types.ObjectId): Promise<User> {
-    const getUserById = await this.userModle.findById(userId, { password: 0 });
+    const getUserById = await this.userModle.findById(userId, {
+      password: 0,
+      role: 0,
+      pnumber: 0,
+    });
     if (!getUserById) {
       throw new NotFoundException(`User with #${userId} not Found`);
     }
@@ -36,6 +46,27 @@ export class UserService {
     const existsUser = await this.userModle.findByIdAndUpdate(
       userId,
       updateUserDto,
+      { new: true }
+    );
+    if (!existsUser) {
+      throw new NotFoundException(`User with #${userId} not found`);
+    }
+    return existsUser;
+  }
+
+  async updatePasswordById(
+    userId: mongoose.Types.ObjectId,
+    updateUserPasswordDto: updateUserPasswordDto
+  ): Promise<User> {
+    const { password, confirmPassword } = updateUserPasswordDto;
+
+    if (password !== confirmPassword) {
+      throw new BadRequestException("Passwords do not match");
+    }
+
+    const existsUser = await this.userModle.findByIdAndUpdate(
+      userId,
+      updateUserPasswordDto,
       { new: true }
     );
     if (!existsUser) {
