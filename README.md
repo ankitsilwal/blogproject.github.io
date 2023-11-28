@@ -79,9 +79,7 @@ Replace placeholders with appropriate values.
 bash
 npm run start
 The application will be running at http://localhost:3000.
-```bash
-$ npm install
-```
+
 
 ## Running the app
 
