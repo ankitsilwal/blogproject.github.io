@@ -1,14 +1,10 @@
-import {
-  Injectable,
-  NotFoundException,
-} from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { Blog } from "./blog.schema";
 import { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
 import { CreateBlogDto } from "./BlogDTO/createblog.dto";
 import mongoose from "mongoose";
 import { UpdateBlogDto } from "./BlogDTO/updateblog.dto";
-// const ObjectId = mongoose.Types.ObjectId
 @Injectable()
 export class BlogService {
   constructor(@InjectModel(Blog.name) private blogModel: Model<Blog>) {}
@@ -84,7 +80,6 @@ export class BlogService {
         `Blog with #${blogId} not found or does not belong to the specified user`
       );
     }
-
     return foundBlog;
   }
 }
