@@ -7,10 +7,11 @@ import {
   NotFoundException,
   Param,
   Put,
+  UseGuards,
 } from "@nestjs/common";
 import { UserService } from "./user.service";
 import mongoose from "mongoose";
-import { UpdateUserDto } from "./dto/updateuserDto";
+import { UpdateUserDto, updateUserPasswordDto } from "./dto/updateuserDto";
 import { User } from "./user.schema";
 import {
   ApiOperation,
@@ -19,8 +20,13 @@ import {
   ApiBody,
   ApiTags,
 } from "@nestjs/swagger";
+import { UserRoles } from "src/Auth/RolesGuard/role.decorator";
+import { UserRole } from "src/Auth/Dto/createUserDto";
+import { RolesGuard } from "src/Auth/RolesGuard/role.guard";
+import { AuthGuard } from "src/Auth/auth.guard";
 
 @ApiTags("USERS- DELETION, UPDATION & RETERIVAL")
+@UseGuards(AuthGuard, RolesGuard)
 @Controller("/users")
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -46,6 +52,7 @@ export class UserController {
     description: "You will get all your",
   })
   @ApiResponse({ status: 200, description: "User is reterived successfully" })
+  @UserRoles(UserRole.ADMIN)
   @Get()
   async getAllUsers(): Promise<User[]> {
     const users = await this.userService.getAllUsers();
@@ -87,6 +94,30 @@ export class UserController {
       const existsUser = await this.userService.updateById(
         userId,
         updateUserDto
+      );
+      return existsUser;
+    } catch (err) {
+      throw new NotFoundException(err);
+    }
+  }
+
+  @ApiOperation({
+    summary: "UPDATE USER Password BY ID",
+    description: "You can update your data by User ID",
+  })
+  @ApiParam({ name: "id", description: "User ID", type: String })
+  @ApiBody({ type: UpdateUserDto, description: "Update your data" })
+  @ApiResponse({ status: 200, description: "User is updated successfully" })
+  @ApiResponse({ status: 400, description: "BAD REQUEST" })
+  @Put(":id/password")
+  async updateUserPasswordById(
+    @Param("id") userId: mongoose.Types.ObjectId,
+    @Body() updateUserPasswordDto: updateUserPasswordDto
+  ) {
+    try {
+      const existsUser = await this.userService.updatePasswordById(
+        userId,
+        updateUserPasswordDto
       );
       return existsUser;
     } catch (err) {
