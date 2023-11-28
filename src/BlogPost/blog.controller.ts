@@ -29,6 +29,7 @@ import {
 import { RolesGuard } from "../Auth/RolesGuard/role.guard";
 import { UserRoles } from "../Auth/RolesGuard/role.decorator";
 import { UserRole } from "../Auth/Dto/createUserDto";
+import { IRequest } from "src/Auth/Interface/request.interface";
 
 @ApiBearerAuth()
 @ApiTags("BLOG- CREATION, DELETION, UPDATION & RETERIVAL")
@@ -72,7 +73,7 @@ export class BlogController {
   @Delete(":id")
   async deleteBlogById(
     @Param("id") blogId: mongoose.Types.ObjectId,
-    @Request() req: any
+    @Request() req: IRequest
   ): Promise<string> {
     const author: mongoose.Types.ObjectId = req.user.sub;
     try {
@@ -102,7 +103,7 @@ export class BlogController {
   async updateBlogById(
     @Param("id") blogId: mongoose.Types.ObjectId,
     @Body() updateBlogDto: UpdateBlogDto,
-    @Request() req: any
+    @Request() req: IRequest
   ) {
     const userId = req.user.sub;
     try {
@@ -140,7 +141,7 @@ export class BlogController {
   @Get(":id")
   async getBlogById(
     @Param("id") blogId: mongoose.Types.ObjectId,
-    @Request() req: any
+    @Request() req: IRequest
   ) {
     const author: mongoose.Types.ObjectId = req.user.sub;
     try {
