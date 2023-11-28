@@ -7,6 +7,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { User } from "./user.schema";
 import mongoose, { Model } from "mongoose";
 import { UpdateUserDto, updateUserPasswordDto } from "./dto/updateuserDto";
+import * as bcrypt from "bcrypt";
 
 @Injectable()
 export class UserService {
@@ -64,14 +65,19 @@ export class UserService {
       throw new BadRequestException("Passwords do not match");
     }
 
-    const existsUser = await this.userModle.findByIdAndUpdate(
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const updatedUserPasswordDto = { password: hashedPassword };
+
+    const updatedUser = await this.userModle.findByIdAndUpdate(
       userId,
-      updateUserPasswordDto,
+      updatedUserPasswordDto,
       { new: true }
     );
-    if (!existsUser) {
+    if (!updatedUser) {
       throw new NotFoundException(`User with #${userId} not found`);
     }
-    return existsUser;
+
+    return updatedUser;
   }
 }

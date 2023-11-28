@@ -35,6 +35,7 @@ export class UserController {
   @ApiParam({ name: "id", description: "USER ID", type: String })
   @ApiResponse({ status: 200, description: "User Deleted" })
   @ApiResponse({ status: 400, description: "Bad Request" })
+  @UserRoles(UserRole.ADMIN)
   @Delete(":id")
   async deleteUserById(
     @Param("id") userId: mongoose.Types.ObjectId
