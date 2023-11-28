@@ -120,12 +120,18 @@ Update, delete, and retrieve blogs based on the role-specific permissions.
 
 Assign roles to users as needed.
 API Endpoints
-# POST /register: Create a new user.
+POST /register: Create a new user.
+
 POST /login: Obtain a JWT token for authentication.
+
 POST /blogs: Create a new blog.
+
 PUT /blogs/:id: Update a blog.
+
 DELETE /blogs/:id: Delete a blog.
+
 GET /blogs/:id: Get a blog by ID.
+
 GET /blogs: Get all blogs.
 ## Technologies Used
 NestJS
