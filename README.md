@@ -106,8 +106,8 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
-## Usage
-# User Registration and Authentication:
+# Usage
+## User Registration and Authentication:
 
 Use the provided registration endpoint to create a user.
 Use the authentication endpoint to obtain a JWT token.
@@ -138,9 +138,7 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 ## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- Author - [Ankit Kumar]
 
 ## License
 
