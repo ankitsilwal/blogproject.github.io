@@ -34,11 +34,12 @@ import { IRequest } from "src/Auth/Interface/request.interface";
 @ApiBearerAuth()
 @ApiTags("BLOG- CREATION, DELETION, UPDATION & RETERIVAL")
 @Controller("blog")
-@UseGuards(AuthGuard, RolesGuard)
+
 export class BlogController {
   constructor(private readonly blogService: BlogService) {}
 
   //Create Blog----------------------------------------------------------------------------------------------------------------------------------------
+  @UseGuards(AuthGuard, RolesGuard)
   @UserRoles(UserRole.ADMIN, UserRole.USER, UserRole.VIEWER)
   @ApiOperation({
     summary: "CREATE BLOG",
@@ -69,6 +70,7 @@ export class BlogController {
   })
   @ApiResponse({ status: 200, description: "Blog is delted successfully" })
   @ApiResponse({ status: 400, description: "BAD REQUEST" })
+  @UseGuards(AuthGuard, RolesGuard)
   @UserRoles(UserRole.ADMIN, UserRole.USER)
   @Delete(":id")
   async deleteBlogById(
@@ -99,6 +101,7 @@ export class BlogController {
   @ApiBody({ type: UpdateBlogDto, description: "Enter updated data" })
   @ApiResponse({ status: 200, description: "Blog is Updated successfully" })
   @ApiResponse({ status: 400, description: "BAD REQUEST" })
+  @UseGuards(AuthGuard, RolesGuard)
   @Put(":id")
   async updateBlogById(
     @Param("id") blogId: mongoose.Types.ObjectId,
@@ -120,7 +123,7 @@ export class BlogController {
   }
 
   //Get Blog------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  @UserRoles(UserRole.ADMIN, UserRole.USER, UserRole.VIEWER)
+
   @ApiOperation({ summary: "GET BLOG", description: "This will Get all blogs" })
   @ApiResponse({ status: 200, description: "Blogs are reterived successfully" })
   @Get()
@@ -130,7 +133,6 @@ export class BlogController {
   }
 
   // Get By Id---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
   @ApiParam({
     name: "id",
     description: "Enter your Blog Id to Retrieve",
@@ -138,6 +140,7 @@ export class BlogController {
   })
   @ApiResponse({ status: 200, description: "Blog is Retrieved successfully" })
   @ApiResponse({ status: 400, description: "BAD REQUEST" })
+  @UseGuards(AuthGuard, RolesGuard)
   @Get(":id")
   async getBlogById(
     @Param("id") blogId: mongoose.Types.ObjectId,
