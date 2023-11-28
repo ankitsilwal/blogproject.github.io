@@ -11,6 +11,7 @@ import {
   Get,
   Request,
   UseGuards,
+  Req,
 } from "@nestjs/common";
 import { BlogService } from "./blog.Service";
 import { CreateBlogDto } from "./BlogDTO/CreateBlog.Dto";
@@ -26,9 +27,15 @@ import {
   ApiBearerAuth,
   ApiTags,
 } from "@nestjs/swagger";
+<<<<<<< Updated upstream:src/BlogPostModule/blog.Controller.ts
 import { RolesGuard } from "../AuthModule/RolesGuard/role.guard";
 import { UserRoles } from "../AuthModule/RolesGuard/role.decorator";
 import { UserRole } from "../AuthModule/Dto/createUserDto";
+=======
+import { RolesGuard } from "src/AuthModule/RolesGuard/role.guard";
+import { UserRoles } from "src/AuthModule/RolesGuard/role.decorator";
+import { UserRole } from "src/AuthModule/Dto/createUserDto";
+>>>>>>> Stashed changes:blogpj/src/BlogPostModule/blog.Controller.ts
 
 @ApiBearerAuth()
 @ApiTags("BLOG- CREATION, DELETION, UPDATION & RETERIVAL")
@@ -74,7 +81,11 @@ export class BlogController {
     @Param("id") blogId: mongoose.Types.ObjectId,
     @Request() req: any
   ): Promise<string> {
+<<<<<<< Updated upstream:src/BlogPostModule/blog.Controller.ts
     const author: mongoose.Types.ObjectId = req.user.sub;
+=======
+    const userId = req.user.sub;
+>>>>>>> Stashed changes:blogpj/src/BlogPostModule/blog.Controller.ts
     try {
       const deletedBlog = await this.blogService.deleteBlogById(blogId, author);
       return `User Deleted with id ${deletedBlog.id}`;
@@ -130,11 +141,19 @@ export class BlogController {
 
   // Get By Id---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+<<<<<<< Updated upstream:src/BlogPostModule/blog.Controller.ts
+=======
+  @ApiOperation({
+    summary: "GET BLOG BY ID",
+    description: "This will Get your blog",
+  })
+>>>>>>> Stashed changes:blogpj/src/BlogPostModule/blog.Controller.ts
   @ApiParam({
     name: 'id',
     description: 'Enter your Blog Id to Retrieve',
     type: String,
   })
+<<<<<<< Updated upstream:src/BlogPostModule/blog.Controller.ts
   @ApiResponse({ status: 200, description: 'Blog is Retrieved successfully' })
   @ApiResponse({ status: 400, description: 'BAD REQUEST' })
   @Get(':id')
@@ -146,6 +165,19 @@ export class BlogController {
     try {
       const findBlogById = await this.blogService.getBlogById(blogId, author);
       return  findBlogById ;
+=======
+  @ApiResponse({ status: 200, description: "Blog is Reterived successfully" })
+  @ApiResponse({ status: 400, description: "BAD REQUEST" })
+  @Get(":id")
+  async getBlogById(
+    @Param("id") blogId: mongoose.Types.ObjectId,
+    @Request() req: any
+  ) {
+    const userId = req.user.sub;
+    try {
+      const findBlogById = await this.blogService.getBlogById(blogId);
+      return { findBlogById, userId };
+>>>>>>> Stashed changes:blogpj/src/BlogPostModule/blog.Controller.ts
     } catch (err) {
       return new BadRequestException(err);
     }

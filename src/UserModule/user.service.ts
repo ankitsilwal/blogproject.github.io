@@ -43,4 +43,11 @@ export class UserService {
     }
     return existsUser;
   }
+<<<<<<< Updated upstream:src/UserModule/user.service.ts
+=======
+
+  async findUserByusername(username: string): Promise<User | null> {
+    return this.userModle.findOne({ username });
+  }
+>>>>>>> Stashed changes:blogpj/src/UserModule/user.service.ts
 }
