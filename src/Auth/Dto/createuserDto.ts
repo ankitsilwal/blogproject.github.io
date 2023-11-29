@@ -19,6 +19,5 @@ export class CreateUserDto {
   role: UserRole;
 
   @IsNotEmpty()
-  @IsNumber()
   pnumber: Number;
 }
