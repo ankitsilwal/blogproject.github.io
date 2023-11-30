@@ -8,4 +8,16 @@
 <body>
     thankyou
 </body>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+  const authToken = document.cookie.replace(/(?:(?:^|.*;\s*)authToken\s*=\s*([^;]*).*$)|^.*$/, "$1");
+
+  if (!authToken) {
+    window.location.href = "thanks.html";
+  } else {
+    console.log("User is authenticated. Displaying thanks page.");
+  }
+});
+
+</script>
 </html>

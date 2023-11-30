@@ -114,7 +114,7 @@ export class UserController {
   @ApiResponse({ status: 400, description: "BAD REQUEST" })
   @Put(":id/password")
   async updateUserPasswordById(
-    @Param("id") userId: mongoose.Types.ObjectId,
+    @Param(":id") userId: mongoose.Types.ObjectId,
     @Body() updateUserPasswordDto: updateUserPasswordDto
   ) {
     try {
