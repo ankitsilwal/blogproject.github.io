@@ -1,66 +1,7 @@
-const loginText = document.querySelector(".title-text .login");
-const loginForm = document.querySelector("form.login");
-const loginBtn = document.querySelector("label.login");
-const signupBtn = document.querySelector("label.signup");
-const signupLink = document.querySelector("form .signup-link a");
-
-signupBtn.onclick = () => {
-  loginForm.style.marginLeft = "-50%";
-  loginText.style.marginLeft = "-50%";
-};
-
-loginBtn.onclick = () => {
-  loginForm.style.marginLeft = "0%";
-  loginText.style.marginLeft = "0%";
-};
-
-signupLink.onclick = () => {
-  signupBtn.click();
-  return false;
-};
-
 document.addEventListener("DOMContentLoaded", () => {
-  const signInForm = document.querySelector(".login");
   const signUpForm = document.querySelector(".signup");
 
-  signInForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
-
-    const formData = new FormData(signInForm);
-    const username = formData.get("username");
-    const password = formData.get("password");
-
-    if (!username || !password) {
-      console.error("Username and password are required.");
-      return;
-    }
-
-    try {
-      const response = await fetch("http://localhost:3000/auth/signin", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username,
-          password,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status} - ${response.statusText}`);
-      }
-
-      const result = await response.json();
-
-      localStorage.setItem("authToken", result.token);
-
-      window.location.href = "thanks.html";
-      console.log(result);
-    } catch (error) {
-      console.error("Error signing in:", error.message);
-    }
-  });
+  signInForm.addEventListener("submit", async (event) => {});
 
   signUpForm.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -86,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
           username,
           pnumber: phoneNumber,
           password,
-          role
+          role,
         }),
       });
 
@@ -101,3 +42,46 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+function signin(event) {
+  console.log(event);
+  event.preventDefault();
+  const signInForm = document.querySelector(".login");
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+  // const formData = new FormData(signInForm);
+  // const username = formData.get("username");
+  // const password = formData.get("password");
+  console.log({ username, password });
+  if (!username || !password) {
+    console.error("Username and password are required.");
+    return;
+  }
+
+  // try {
+  //   const response = await fetch("http://localhost:3000/auth/signin", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       username,
+  //       password,
+  //     }),
+  //   });
+  //   console.log("hello");
+  //   if (!response.ok) {
+  //     throw new Error(`Error: ${response.status} - ${response.statusText}`);
+  //   }
+
+  //   const result = await response.json();
+
+  //   // Store the access token in an HTTP-only cookie
+  //   document.cookie = `authToken=${result.accessToken}; Secure; HttpOnly; SameSite=Strict`;
+
+  //   // window.location.href = "index.html";
+  //   // console.log(result);
+  // } catch (error) {
+  //   console.error("Error signing in:", error.message);
+  // }
+}
