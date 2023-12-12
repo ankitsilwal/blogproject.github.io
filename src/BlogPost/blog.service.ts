@@ -59,12 +59,22 @@ export class BlogService {
     return existsBlog;
   }
 
-  async getAllBlogs(): Promise<Blog[]> {
-    const blogs = await this.blogModel
-      .find()
-      .populate("author", { password: 0 });
-    return blogs;
+  async getAllBlogs(page: number = 1, pageSize: number = 5): Promise<{ blogs: Blog[] }> {
+    const skip = (page - 1) * pageSize;
+  
+    const [blogs, ] = await Promise.all([
+      this.blogModel
+        .find()
+        .populate("author", { password: 0 })
+        .skip(skip)
+        .limit(pageSize)
+        .exec(),
+      this.blogModel.countDocuments().exec(),
+    ]);
+  
+    return { blogs};
   }
+  
 
   async getBlogById(
     blogId: mongoose.Types.ObjectId,

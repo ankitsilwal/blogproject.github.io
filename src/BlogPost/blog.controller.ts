@@ -11,6 +11,7 @@ import {
   Get,
   Request,
   UseGuards,
+  Query,
 } from "@nestjs/common";
 import { BlogService } from "./blog.service";
 import { CreateBlogDto } from "./BlogDTO/createblog.dto";
@@ -34,7 +35,6 @@ import { IRequest } from "src/Auth/Interface/request.interface";
 @ApiBearerAuth()
 @ApiTags("BLOG- CREATION, DELETION, UPDATION & RETERIVAL")
 @Controller("blog")
-
 export class BlogController {
   constructor(private readonly blogService: BlogService) {}
 
@@ -125,11 +125,14 @@ export class BlogController {
   //Get Blog------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
   @ApiOperation({ summary: "GET BLOG", description: "This will Get all blogs" })
-  @ApiResponse({ status: 200, description: "Blogs are reterived successfully" })
+  @ApiResponse({ status: 200, description: "Blogs are retrieved successfully" })
   @Get()
-  async getAllBlogs(): Promise<Blog[]> {
-    const blogs = await this.blogService.getAllBlogs();
-    return blogs;
+  async getAllBlogs(
+    @Query("page") page?: number,
+    @Query("pageSize") pageSize?: number
+  ): Promise<{ blogs: Blog[] }> {
+    const result = await this.blogService.getAllBlogs(page, pageSize);
+    return result;
   }
 
   // Get By Id---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
