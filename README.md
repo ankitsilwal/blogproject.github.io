@@ -138,7 +138,8 @@ Update, delete, and retrieve blogs based on the role-specific permissions.
 # Roles:
 
 Assign roles to users as needed.
-API Endpoints.
+
+# API Endpoints.
 
 POST /register: Create a new user.
 
