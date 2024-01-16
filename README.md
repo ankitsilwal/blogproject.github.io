@@ -22,6 +22,17 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
+
+## Description
+
+[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+
+## Installation
+
+```bash
+$ npm install
+```
+=======
 ## NestJS Blog Management System
 
 This project is a NestJS-based Blog Management System that allows users to perform various actions such as creating, updating, and deleting blog posts based on their roles. The system supports three roles: admin, user, and viewer. Each role has specific permissions outlined below:
@@ -125,6 +136,8 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+=======
 # Usage
 User Registration and Authentication:
 
@@ -159,6 +172,7 @@ NestJS
 MongoDB
 JWT (JSON Web Tokens)
 
+
 ## Support
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
@@ -166,6 +180,7 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## Stay in touch
 
 - Author - Ankit Kumar
+
 
 ## License
 
