@@ -27,23 +27,41 @@
 This project is a NestJS-based Blog Management System that allows users to perform various actions such as creating, updating, and deleting blog posts based on their roles. The system supports three roles: admin, user, and viewer. Each role has specific permissions outlined below:
 
 ## Roles and Permissions
-Admin
+
+Admin:
+
 Create Blog: Allowed
+
 Update Blog: Allowed (for all blogs)
+
 Delete Blog: Allowed (for all blogs)
+
 Get Blog by ID: Allowed (for all blogs)
+
 Get All Blogs: Allowed
-User
+
+User:
+
 Create Blog: Allowed
+
 Update Blog: Allowed (only for blogs they posted)
+
 Delete Blog: Allowed (only for blogs they posted)
+
 Get Blog by ID: Allowed (only for blogs they posted)
+
 Get All Blogs: Allowed
-Viewer
+
+Viewer:
+
 Create Blog: Not Allowed
+
 Update Blog: Not Allowed
+
 Delete Blog: Not Allowed
+
 Get Blog by ID: Allowed (for all blogs)
+
 Get All Blogs: Allowed
 
 ## Getting Started
@@ -120,7 +138,8 @@ Update, delete, and retrieve blogs based on the role-specific permissions.
 # Roles:
 
 Assign roles to users as needed.
-API Endpoints
+API Endpoints.
+
 POST /register: Create a new user.
 
 POST /login: Obtain a JWT token for authentication.
